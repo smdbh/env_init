@@ -3,8 +3,8 @@
 echo "Custom user configurations..."
 
 # apt install
-apt-get update
-apt-get install -y byobu vim zsh  htop zip unzip  net-tools locate
+# apt-get update
+# apt-get install -y byobu vim zsh  htop zip unzip  net-tools locate
 
 
 # copy dotfiles

@@ -13,3 +13,5 @@ apt update
 apt install -y byobu vim zsh  htop zip unzip  net-tools locate # curl wget 
 
 sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+
+sudo chsh -s /usr/bin/zsh `whoami`

@@ -43,7 +43,7 @@ ZSH_THEME="muse"
 # Uncomment the following line if you want to change the command execution time
 # stamp shown in the history command output.
 # The optional three formats: "mm/dd/yyyy"|"dd.mm.yyyy"|"yyyy-mm-dd"
-# HIST_STAMPS="mm/dd/yyyy"
+HIST_STAMPS="yyyy-mm-dd"
 
 # Would you like to use another custom folder than $ZSH/custom?
 # ZSH_CUSTOM=/path/to/new-custom-folder
@@ -53,7 +53,7 @@ ZSH_THEME="muse"
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
 #plugins=(git zsh-syntax-highlighting zsh-autosuggestions)
-plugins=(git zsh-syntax-highlighting   )
+plugins=(git z zsh-syntax-highlighting   sudo zsh-history-substring-search)
 
 source $ZSH/oh-my-zsh.sh
 
@@ -86,6 +86,14 @@ source $ZSH/oh-my-zsh.sh
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 # alias sbb='sudo $(fc -ln -1)'
+
+# 
+# zstyle ':completion:*' completer _expand_alias _complete _ignored
+
+bindkey -M emacs '^[j' history-substring-search-up
+bindkey -M emacs '^[k' history-substring-search-down
+bindkey -M emacs "^e" _expand_alias
+
 alias tmll="tmux ls"
 alias tmat='_a(){tmux ls ; echo "input id:"; read  id; tmux attach -t $id;}; _a'
 alias ll="ls -alh"
@@ -100,20 +108,44 @@ alias gitl='git log --all --graph --pretty=tformat:"%C(auto)%h%x09%cs  %d%s"'
 alias gits='git status' 
 alias gitco='git checkout' 
 alias gitcm='git commit ' 
+alias gitpr='git pull --rebase ' 
 
-#PROMPT='%{$PROMPT_SUCCESS_COLOR%}%]%?%~>%{$reset_color%}% '
-# PROMPT=$' %{$PROMPT_SUCCESS_COLOR%}%]%?-\
-# %{$fg[green]%}\
-# $(git_prompt_info)\
-# %{$fg[cyan]%}\
-# %/\
-# \r\n\
-# %#%{$reset_color%} '
+# config git proxy
+enable_mygit_proxy () {
+    # !0 for enable
+    
+    if [ "$1" != "" ]; then 
+        git config --global http.proxy http://127.0.0.1:8889 
+        echo  'enable git proxy.'
+    else
+        git config --global --unset http.proxy
+        echo  'disable git proxy'
+    fi
+    
+}
+
 
 PROMPT=$'%{$PROMPT_SUCCESS_COLOR%}%]%? %{$fg[white]%}%n@%m %{$fg[cyan]%} %/$(git_prompt_info)\r\n\%#%{$reset_color%} '
 
-source ~/z.sh
+# ros settings.
+if [ $(hostname) = "u18ros" ]; then
 
-#PATH=/opt/arc_gnu2019/bin:~/.local/bin:$PATH
+	mount |grep workspace > /dev/null
+	if [ $? -ne 0 ]; then
+		sudo mount -t virtiofs workspace /home/ronnie/workspaces
+	fi
+
+	_file=/opt/ros/melodic/setup.zsh
+	if [ -f $_file ]; then
+		source $_file
+	fi
+
+	_file=/home/ronnie/workspaces/u18project/catkin_ws/devel/setup.zsh
+	if [ -f $_file ]; then
+		source $_file
+	fi
+fi 
+
+PATH=/usr/local/cuda-11.7/bin:$PATH
 # export CROSS_COMPILE=arc-elf32-
 

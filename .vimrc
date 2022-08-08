@@ -11,7 +11,6 @@ call plug#begin('~/.vim/plugged')
 " add plug-in items
 Plug 'vim-airline/vim-airline' 
 Plug 'scrooloose/nerdcommenter'
-"Plug 'scrooloose/nerdtree'
 Plug 'preservim/nerdtree'
 call plug#end()
 
@@ -19,15 +18,18 @@ call plug#end()
 " ---- key bindings --------------------------------------
 let mapleader=","
 
-" app save quit reload
+" save quit reload
 noremap <S-r>     	:w<CR>:source $MYVIMRC<CR>
-nmap    <leader>qq  :q!
+nmap    <leader>qq  :q!<CR>
+nmap    <leader>ww  :wq!
+nmap    <leader>WW  :w !sudo tee %
+
 " move multi-lines
-noremap  J  5j
-noremap  K  5k
+noremap  J  10j
+noremap  K  10k
 
 
-nmap <C-_>			,c<space><esc>
+" nmap <C-_>			,c<space><esc>
 " :nmap <F2>       :cp <CR> 
 " :nmap <F3>       :cn <CR>
 
@@ -48,20 +50,14 @@ nmap <leader>tn     :tabe<space>
 nmap <leader>tc     :tabc<cr>
 nmap <S-left>       gt
 nmap <S-right>      gT
-nmap <C-=>      gT
+nmap <C-=>          gT
+cmap tn             tabe #<
 
 " see old files
 nmap <leader>ho     :oldfiles<CR>
-cmap tn             tabe #<
 
 
 nmap <C-f>     		:Ag<space> 
-
-
-" sudo save file
-nmap WW             :w !sudo tee %
-nmap ~~             :q!<CR>
-
 
 
 " ---- attr settings -------------------------------------
@@ -99,7 +95,6 @@ let g:NERDSpaceDelims = 1
 " nerd tree 
 nmap tt :NERDTreeToggle<cr>
 let g:NERDTreeHidden=0
-
 
 
 :nnoremap <Leader>ff :FufFile <CR>     "fuzzy finder
